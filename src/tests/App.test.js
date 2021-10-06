@@ -1,6 +1,21 @@
+import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { screen } from '@testing-library/react';
-import renderWithRouter from '../renderWithRouter';
+import { render, screen } from '@testing-library/react';
+import { Router } from 'react-router';
+import { createMemoryHistory } from 'history';
+import App from '../App';
+
+const renderWithRouter = () => {
+  const history = createMemoryHistory();
+  return ({
+    ...render(
+      <Router history={ history }>
+        <App />
+      </Router>,
+    ),
+    history,
+  });
+};
 
 describe('Checks if the navegation links works correctly.', () => {
   it('Checks the amount of links and names expected.', () => {
