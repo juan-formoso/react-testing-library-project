@@ -17,43 +17,43 @@ const renderWithRouter = () => {
   });
 };
 
-describe('Checks if the navegation links works correctly.', () => {
-  it('Checks the amount of links and names expected.', () => {
+describe('Verifica se os links de navegação funcionam devidamente.', () => {
+  it('Testa se o número de links e nomes esperados.', () => {
     renderWithRouter();
-    const homeLink = screen.getByRole('link', { name: 'Home' });
-    expect(homeLink).toBeInTheDocument();
+    const linkHome = screen.getByRole('link', { name: 'Home' });
+    expect(linkHome).toBeInTheDocument();
 
-    const aboutLink = screen.getByRole('link', { name: 'About' });
-    expect(aboutLink).toBeInTheDocument();
+    const linkAbout = screen.getByRole('link', { name: 'About' });
+    expect(linkAbout).toBeInTheDocument();
 
-    const favPokemonsLink = screen.getByRole('link', { name: 'Favorite Pókemons' });
-    expect(favPokemonsLink).toBeInTheDocument();
+    const linkFavPoke = screen.getByRole('link', { name: 'Favorite Pokémons' });
+    expect(linkFavPoke).toBeInTheDocument();
   });
 
-  it('Checks if the link Home directs to the URL:"/"', () => {
-    const { history } = renderWithRouter;
-    const homeLink = screen.getByRole('link', { name: 'Home' });
-    userEvent.click(homeLink);
+  it('Testa se o link Home redireciona para URL:"/"', () => {
+    const { history } = renderWithRouter();
+    const linkHome = screen.getByRole('link', { name: 'Home' });
+    userEvent.click(linkHome);
     expect(history.location.pathname).toBe('/');
   });
 
-  it('Checks if the link About directs to the URL:"/about"', () => {
-    const { history } = renderWithRouter;
-    const aboutLink = screen.getByRole('link', { name: 'About' });
-    userEvent.click(aboutLink);
-    expect(history.location.pathname).toBe('/');
+  it('Testa se o link About redireciona para URL:"/about"', () => {
+    const { history } = renderWithRouter();
+    const linkAbout = screen.getByRole('link', { name: 'About' });
+    userEvent.click(linkAbout);
+    expect(history.location.pathname).toBe('/about');
   });
 
-  it('Checks if the link Favorite Pokémons directs to the URL:"/favorites"', () => {
-    const { history } = renderWithRouter;
-    const favPokemonsLink = screen.getByRole('link', { name: 'Favorite Pokémons' });
-    userEvent.click(favPokemonsLink);
+  it('Testa se o link Favorite Pokémons redireciona para URL:"/favorites"', () => {
+    const { history } = renderWithRouter();
+    const linkFavPokemon = screen.getByRole('link', { name: 'Favorite Pokémons' });
+    userEvent.click(linkFavPokemon);
     expect(history.location.pathname).toBe('/favorites');
   });
 
-  it('Checks if the link Favorite Pokémons directs to the URL:"/favorites"', () => {
-    const { history } = renderWithRouter;
-    history.push('anyURL');
+  it('Testa se é redirecionado a página Not Found quando a URL não existe', () => {
+    const { history } = renderWithRouter();
+    history.push('anyUrl');
     const pageNotFound = screen.getByText('Page requested not found');
     expect(pageNotFound).toBeInTheDocument();
   });
