@@ -1,60 +1,65 @@
 import React from 'react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
-import { Router } from 'react-router';
-import { createMemoryHistory } from 'history';
+import renderWithRouter from './renderWithRouter';
 import App from '../App';
 
-const renderWithRouter = () => {
-  const history = createMemoryHistory();
-  return ({
-    ...render(
-      <Router history={ history }>
-        <App />
-      </Router>,
-    ),
-    history,
-  });
-};
-
-describe('Verifica se os links de navegação funcionam devidamente.', () => {
-  it('Testa se o número de links e nomes esperados.', () => {
-    renderWithRouter();
+describe('1. Teste o componente <App.js />', () => {
+  test('se o topo da aplicação contém um conjunto fixo de links de navegação.', () => {
+    renderWithRouter(<App />);
     const linkHome = screen.getByRole('link', { name: 'Home' });
     expect(linkHome).toBeInTheDocument();
 
     const linkAbout = screen.getByRole('link', { name: 'About' });
     expect(linkAbout).toBeInTheDocument();
 
-    const linkFavPoke = screen.getByRole('link', { name: 'Favorite Pokémons' });
-    expect(linkFavPoke).toBeInTheDocument();
+    const linkFavoritePokemons = screen.getByRole('link', { name: 'Favorite Pokémons' });
+    expect(linkFavoritePokemons).toBeInTheDocument();
   });
 
-  it('Testa se o link Home redireciona para URL:"/"', () => {
-    const { history } = renderWithRouter();
+  test(`se a aplicação é redirecionada para a página inicial,
+   na URL / ao clicar no link Home da barra de navegação.`, () => {
+    const { history } = renderWithRouter(<App />);
+
     const linkHome = screen.getByRole('link', { name: 'Home' });
+
     userEvent.click(linkHome);
+
     expect(history.location.pathname).toBe('/');
   });
 
-  it('Testa se o link About redireciona para URL:"/about"', () => {
-    const { history } = renderWithRouter();
+  test(`se a aplicação é redirecionada para a página de About,
+   na URL /about, ao clicar no link About da barra de navegação.`, () => {
+    const { history } = renderWithRouter(<App />);
+
     const linkAbout = screen.getByRole('link', { name: 'About' });
+
     userEvent.click(linkAbout);
+
     expect(history.location.pathname).toBe('/about');
   });
 
-  it('Testa se o link Favorite Pokémons redireciona para URL:"/favorites"', () => {
-    const { history } = renderWithRouter();
-    const linkFavPokemon = screen.getByRole('link', { name: 'Favorite Pokémons' });
-    userEvent.click(linkFavPokemon);
+  test(`se a aplicação é redirecionada para a página de Pokémons Favoritados,
+   na URL /favorites, ao clicar no link Favorite Pokémons da barra de navegação.`, () => {
+    const { history } = renderWithRouter(<App />);
+
+    const linkFavoritePokemons = screen.getByRole('link', { name: 'Favorite Pokémons' });
+
+    userEvent.click(linkFavoritePokemons);
+
     expect(history.location.pathname).toBe('/favorites');
   });
 
-  it('Testa se é redirecionado a página Not Found quando a URL não existe', () => {
-    const { history } = renderWithRouter();
-    history.push('anyUrl');
-    const pageNotFound = screen.getByText('Page requested not found');
-    expect(pageNotFound).toBeInTheDocument();
+  test(`se a aplicação é redirecionada para a página Not Found
+   ao entrar em uma URL desconhecida.`, () => {
+    const { history } = renderWithRouter(<App />);
+    history.push('/pikachu');
+
+    const textNotFound = screen.getByRole('heading', {
+      level: 2,
+      name: 'Page requested not found Crying emoji',
+    });
+
+    expect(textNotFound).toBeInTheDocument();
   });
 });
