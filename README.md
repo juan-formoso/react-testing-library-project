@@ -1,7 +1,7 @@
 # React Testing Library Project
 
 # Contexto
-Este projeto trata-se do desenvolvimento uma biblioteca de cartões de filmes utilizando React. A biblioteca possui um cabeçalho e uma lista de cartões. Cada cartão representa um filme e possui uma imagem, título, subtítulo, sinopse e avaliação.
+Este projeto consiste na construção de testes para uma aplicação React.
 
 ## Tecnologias usadas
 
